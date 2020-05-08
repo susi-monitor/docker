@@ -67,7 +67,7 @@ RUN set -ex; \
     } > $PHP_INI_DIR/conf.d/phpmyadmin-misc.ini
 
 # Generate download URL
-ENV VERSION 1.4.1
+ENV VERSION 1.4.3
 ENV URL https://github.com/susi-monitor/susi-monitor/releases/download/${VERSION}/susi_monitor_${VERSION}_bundle.zip
 ARG BUILD_DATE
 ARG VCS_REF
