@@ -14,8 +14,6 @@ RUN set -ex; \
         libxpm-dev \
         libzip-dev \
         wget \
-        curl \
-        libcurl \
         unzip \
     ; \
     \
