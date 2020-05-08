@@ -15,6 +15,7 @@ RUN set -ex; \
         libzip-dev \
         wget \
         curl \
+        libcurl \
         unzip \
     ; \
     \
@@ -26,6 +27,7 @@ RUN set -ex; \
         pdo \
         pgsql \
         sqlite3 \
+        pdo-sqlite \
         mysqli \
         opcache \
         zip \
