@@ -25,7 +25,7 @@ RUN set -ex; \
         pdo \
         pgsql \
         sqlite3 \
-        pdo-sqlite \
+        pdo_sqlite \
         mysqli \
         opcache \
         zip \
