@@ -27,6 +27,7 @@ RUN apt-get update; \
     php7.0-zip; \
     apt-get clean; \
     php -i | grep 'Scan this directory for additional'; \
+    a2enmod rewrite php7.0; \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /var/cache/apt/archive/*.deb;
 
 # PHP settings
@@ -72,19 +73,23 @@ LABEL maintainer="Grzegorz Olszewski <grzegorz@olszewski.in>" \
 
 # Download zip and extract
 RUN curl -fsSL -o susi-monitor.zip $URL; \
+    rm -f /var/www/html/index.html; \
     unzip -q susi-monitor.zip -d /var/www/html; \
     mkdir -p /var/www/html/application/cache; \
     chown -R www-data:www-data /var/www/html; \
     rm -rf /var/www/html/composer.json;
 
+WORKDIR /var/www/html/
+
 # Copy config
-COPY susi-config.php /etc/susi-monitor/application/config/susi-config.php
+COPY susi-config.php /var/www/html/application/config/susi-config.php
 
 # Copy DB config
 COPY database.php /etc/susi-monitor/application/config/database.php
 
-COPY docker-entrypoint.sh /docker-entrypoint.sh
+COPY docker-entrypoint.sh /sbin/docker-entrypoint.sh
+RUN chmod 775 /sbin/docker-entrypoint.sh && chmod 777 -R /var/www/html/application/database
 
-EXPOSE 80/tcp
-ENTRYPOINT [ "/docker-entrypoint.sh" ]
-CMD ["apache2 -D FOREGROUND"]
+EXPOSE 80 443
+ENTRYPOINT [ "/sbin/docker-entrypoint.sh" ]
+CMD ["/usr/sbin/apache2 -D FOREGROUND"]
