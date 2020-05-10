@@ -1,52 +1,31 @@
-FROM php:7.4-apache
+FROM debian:stretch
+LABEL maintainer="Grzegorz Olszewski <grzegorz@olszewski.in>"
 
-RUN set -ex; \
+RUN apt-get update; \
     \
-    savedAptMark="$(apt-mark showmanual)"; \
-    \
-    apt-get update; \
-    apt-get install -y --no-install-recommends \
-        libbz2-dev \
-        libfreetype6-dev \
-        libjpeg-dev \
-        libpng-dev \
-        libwebp-dev \
-        libxpm-dev \
-        libzip-dev \
-        wget \
-        unzip \
-        curl \
-        libcurl4-openssl-dev\
-        pkg-config\
-        libpq-dev\
-    ; \
-    \
-    docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp --with-xpm; \
-    docker-php-ext-install -j "$(nproc)" \
-        bz2 \
-        gd \
-        curl \
-        pdo \
-        pgsql \
-        sqlite3 \
-        pdo_sqlite \
-        mysqli \
-        opcache \
-        zip \
-    ; \
-    \
-    apt-mark auto '.*' > /dev/null; \
-    apt-mark manual $savedAptMark; \
-    ldd "$(php -r 'echo ini_get("extension_dir");')"/*.so \
-        | awk '/=>/ { print $3 }' \
-        | sort -u \
-        | xargs -r dpkg-query -S \
-        | cut -d: -f1 \
-        | sort -u \
-        | xargs -rt apt-mark manual; \
-    \
-    apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
-    rm -rf /var/lib/apt/lists/*
+    apt-get install -y --no-install-recommends\
+    apache2 \
+    wget \
+    curl \
+    unzip \
+    php7.0 \
+    php7.0-cli \
+    libapache2-mod-php7.0 \
+    php7.0-bcmath \
+    php7.0-bz2  \
+    php7.0-curl \
+    php7.0-gd \
+    php7.0-intl \
+    php7.0-json \
+    php7.0-mbstring \
+    php7.0-mcrypt \
+    php7.0-mysql \
+    php7.0-sqlite3 \
+    php7.0-pgsql \
+    php7.0-xml \
+    php7.0-zip; \
+    apt-get clean; \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /var/cache/apt/archive/*.deb;
 
 # PHP settings
 RUN set -ex; \
@@ -57,18 +36,18 @@ RUN set -ex; \
         echo 'opcache.max_accelerated_files=4000'; \
         echo 'opcache.revalidate_freq=2'; \
         echo 'opcache.fast_shutdown=1'; \
-    } > $PHP_INI_DIR/conf.d/opcache-recommended.ini; \
+    } > /etc/php/7.2/apache2/conf.d/opcache-recommended.ini; \
     \
     { \
         echo 'session.cookie_httponly = 1'; \
         echo 'session.use_strict_mode = 1'; \
-    } > $PHP_INI_DIR/conf.d/session-strict.ini; \
+    } > /etc/php/7.2/apache2/conf.d/session-strict.ini; \
     \
     { \
         echo 'allow_url_fopen = On'; \
         echo 'max_execution_time = 6000'; \
         echo 'memory_limit = 512M'; \
-    } > $PHP_INI_DIR/conf.d/phpmyadmin-misc.ini
+    } > /etc/php/7.2/apache2/conf.d/susi-others.ini
 
 # Generate download URL
 ENV VERSION 1.4.3
@@ -89,26 +68,12 @@ LABEL maintainer="Grzegorz Olszewski <grzegorz@olszewski.in>" \
     org.opencontainers.image.revision="${VCS_REF}" \
     org.opencontainers.image.created="${BUILD_DATE}"
 
-# Download tarball, verify it using gpg and extract
-RUN set -ex; \
-    \
-    savedAptMark="$(apt-mark showmanual)"; \
-    \
-    apt-get update; \
-    apt-get install -y --no-install-recommends \
-        dirmngr \
-    ; \
-    \
-    curl -fsSL -o susi-monitor.zip $URL; \
+# Download zip and extract
+RUN curl -fsSL -o susi-monitor.zip $URL; \
     unzip susi-monitor.zip -d /var/www/html; \
     mkdir -p /var/www/html/application/cache; \
     chown -R www-data:www-data /var/www/html; \
-    rm -rf /var/www/html/composer.json; \
-    \
-    apt-mark auto '.*' > /dev/null; \
-    apt-mark manual $savedAptMark; \
-    apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
-    rm -rf /var/lib/apt/lists/*
+    rm -rf /var/www/html/composer.json;
 
 # Copy config
 COPY susi-config.php /etc/susi-monitor/application/config/susi-config.php
@@ -118,5 +83,6 @@ COPY database.php /etc/susi-monitor/application/config/database.php
 
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 
+EXPOSE 80/tcp
 ENTRYPOINT [ "/docker-entrypoint.sh" ]
-CMD ["apache2-foreground"]
+CMD ["apache2 -D FOREGROUND"]
