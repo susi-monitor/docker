@@ -18,6 +18,7 @@ RUN set -ex; \
         curl \
         libcurl4-openssl-dev\
         pkg-config\
+        libpq-dev\
     ; \
     \
     docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp --with-xpm; \
