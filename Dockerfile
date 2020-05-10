@@ -15,6 +15,9 @@ RUN set -ex; \
         libzip-dev \
         wget \
         unzip \
+        curl \
+        libcurl4-openssl-dev\
+        pkg-config\
     ; \
     \
     docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp --with-xpm; \
