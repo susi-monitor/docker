@@ -25,6 +25,7 @@ RUN apt-get update; \
     php7.0-xml \
     php7.0-zip; \
     apt-get clean; \
+    php -i | grep 'conf.d'; \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /var/cache/apt/archive/*.deb;
 
 # PHP settings
