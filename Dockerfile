@@ -7,6 +7,7 @@ RUN apt-get update; \
     apache2 \
     wget \
     curl \
+    ca-certificates \
     unzip \
     php7.0 \
     php7.0-cli \
@@ -71,7 +72,7 @@ LABEL maintainer="Grzegorz Olszewski <grzegorz@olszewski.in>" \
 
 # Download zip and extract
 RUN curl -fsSL -o susi-monitor.zip $URL; \
-    unzip susi-monitor.zip -d /var/www/html; \
+    unzip -q susi-monitor.zip -d /var/www/html; \
     mkdir -p /var/www/html/application/cache; \
     chown -R www-data:www-data /var/www/html; \
     rm -rf /var/www/html/composer.json;
