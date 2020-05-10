@@ -25,7 +25,7 @@ RUN apt-get update; \
     php7.0-xml \
     php7.0-zip; \
     apt-get clean; \
-    php -i | grep 'conf.d'; \
+    php -i | grep 'Scan this directory for additional'; \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /var/cache/apt/archive/*.deb;
 
 # PHP settings
@@ -37,18 +37,18 @@ RUN set -ex; \
         echo 'opcache.max_accelerated_files=4000'; \
         echo 'opcache.revalidate_freq=2'; \
         echo 'opcache.fast_shutdown=1'; \
-    } > /etc/php/7.2/apache2/conf.d/opcache-recommended.ini; \
+    } > /etc/php/7.0/cli/conf.d/opcache-recommended.ini; \
     \
     { \
         echo 'session.cookie_httponly = 1'; \
         echo 'session.use_strict_mode = 1'; \
-    } > /etc/php/7.2/apache2/conf.d/session-strict.ini; \
+    } > /etc/php/7.0/cli/conf.d/session-strict.ini; \
     \
     { \
         echo 'allow_url_fopen = On'; \
         echo 'max_execution_time = 6000'; \
         echo 'memory_limit = 512M'; \
-    } > /etc/php/7.2/apache2/conf.d/susi-others.ini
+    } > /etc/php/7.0/cli/conf.d/susi-others.ini
 
 # Generate download URL
 ENV VERSION 1.4.3
