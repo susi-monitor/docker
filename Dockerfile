@@ -78,8 +78,8 @@ LABEL maintainer="Grzegorz Olszewski <grzegorz@olszewski.in>" \
 
 # Download zip and extract
 RUN curl -fsSL -o susi-monitor.zip $URL; \
-    mkdir /var/www/app;
-    chown -R www-data:www-data /var/www/app;
+    mkdir /var/www/app; \
+    chown -R www-data:www-data /var/www/app; \
     rm -f /var/www/html/index.html; \
     unzip -q susi-monitor.zip -d /var/www/app; \
     mkdir -p /var/www/app/application/cache; \
