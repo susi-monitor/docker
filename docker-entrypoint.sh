@@ -12,6 +12,7 @@ if [ -f "$FILE" ]; then
     echo "$FILE exists - will not copy the DB as it is already in place."
 else
     echo "$FILE does not exist - creating new SQLite DB there."
+    mkdir /data/
     cp /var/www/app/application/database/data.db /data/data.db
     chown -R www-data:www-data /data/
 fi
