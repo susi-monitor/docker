@@ -1,18 +1,18 @@
 # docker
 
-susi-monitor docker image
+[**susi-monitor**](https://susi-monitor.github.io/) docker image
 
 How to run it?
 
-On local machine this will suffice
+On local machine this will suffice:
 
 `docker run -it -p 80:80 -e BASEURL=http://localhost`
 
 Basically bind port 80 to something and provide BASEURL (in `http(s)://HOSTNAME` format) - that's it.
 
-By default SuSi-monitor uses SQLite DB stored in `/data/` so you may wish to mount
+By default SuSi-monitor uses SQLite DB stored in `/data/` so you may want to mount
 it for persistence.
-
+---
 Optionally you may wish to customize rest of variables:
 - `ADMIN_PASSWORD` - password for /admin page
 - `PAGE_TITLE` - custom page title
