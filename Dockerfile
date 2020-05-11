@@ -83,7 +83,12 @@ RUN curl -fsSL -o susi-monitor.zip $URL; \
     rm -f /var/www/html/index.html; \
     unzip -q susi-monitor.zip -d /var/www/app; \
     mkdir -p /var/www/app/application/cache; \
-    rm -rf /var/www/app/composer.json;
+    rm -rf /var/www/app/composer.json; \
+    # Forward request and error logs to docker log collector
+    ln -sf /dev/stdout /var/log/apache2/access.log; \
+    ln -sf /dev/stderr /var/log/apache2/error.log; \
+    chown -Rf www-data:www-data ${PHP_DATA_DIR}; \
+    rm ${APACHE_CONF_DIR}/sites-enabled/000-default.conf ${APACHE_CONF_DIR}/sites-available/000-default.conf;
 
 # Copy config
 COPY app.conf ${APACHE_CONF_DIR}/sites-enabled/app.conf
