@@ -1,6 +1,11 @@
 FROM debian:stretch
 LABEL maintainer="Grzegorz Olszewski <grzegorz@olszewski.in>"
 
+ENV APACHE_CONF_DIR=/etc/apache2 \
+    PHP_CONF_DIR=/etc/php/7.0 \
+    PHP_DATA_DIR=/var/lib/php
+
+
 RUN apt-get update; \
     \
     apt-get install -y --no-install-recommends\
@@ -73,22 +78,24 @@ LABEL maintainer="Grzegorz Olszewski <grzegorz@olszewski.in>" \
 
 # Download zip and extract
 RUN curl -fsSL -o susi-monitor.zip $URL; \
+    mkdir /var/www/app;
+    chown -R www-data:www-data /var/www/app;
     rm -f /var/www/html/index.html; \
-    unzip -q susi-monitor.zip -d /var/www/html; \
-    mkdir -p /var/www/html/application/cache; \
-    chown -R www-data:www-data /var/www/html; \
-    rm -rf /var/www/html/composer.json;
-
-WORKDIR /var/www/html/
+    unzip -q susi-monitor.zip -d /var/www/app; \
+    mkdir -p /var/www/app/application/cache; \
+    rm -rf /var/www/app/composer.json;
 
 # Copy config
-COPY susi-config.php /var/www/html/application/config/susi-config.php
+COPY app.conf ${APACHE_CONF_DIR}/sites-enabled/app.conf
+COPY susi-config.php /var/www/app/application/config/susi-config.php
 
 # Copy DB config
-COPY database.php /etc/susi-monitor/application/config/database.php
+COPY database.php /var/www/app/application/config/database.php
 
 COPY docker-entrypoint.sh /sbin/docker-entrypoint.sh
-RUN chmod 775 /sbin/docker-entrypoint.sh && chmod 777 -R /var/www/html/application/database
+RUN chmod 775 /sbin/docker-entrypoint.sh
+
+WORKDIR /var/www/app/
 
 EXPOSE 80 443
 ENTRYPOINT [ "/sbin/docker-entrypoint.sh" ]
