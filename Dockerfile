@@ -49,8 +49,8 @@ RUN apt-get update; \
         && ln -s /opt/oracle/instantclient_12_2/libclntshcore.so.12.2 /opt/oracle/instantclient_12_2/libclntshcore.so \
         && ln -s /opt/oracle/instantclient_12_2/libocci.so.12.2 /opt/oracle/instantclient_12_2/libocci.so \
         && rm -rf /opt/oracle/*.zip; \
-    echo 'instantclient,/usr/lib/oracle/12.1/client64/lib' | pecl install -f oci8-2.0.8; \
-    echo "extension=oci8.so" > /etc/php5/apache2/conf.d/30-oci8.ini; \
+    echo 'instantclient,/opt/oracle/instantclient_12_2/client64/lib' | pecl install -f oci8-2.0.8; \
+    echo "extension=oci8.so" > /etc/php7.0/apache2/conf.d/30-oci8.ini; \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /var/cache/apt/archive/*.deb;
 
 # PHP settings
