@@ -5,6 +5,16 @@ ENV APACHE_CONF_DIR=/etc/apache2 \
     PHP_CONF_DIR=/etc/php/7.0 \
     PHP_DATA_DIR=/var/lib/php
 
+#ORACLE Client
+RUN mkdir /opt/oracle \
+    && cd /opt/oracle
+
+ADD oracle/instantclient-basic-linux.x64-12.2.0.1.0.zip /opt/oracle
+ADD oracle/instantclient-sdk-linux.x64-12.2.0.1.0.zip /opt/oracle
+ADD oracle/instantclient-sqlplus-linux.x64-12.2.0.1.0.zip /opt/oracle
+
+ENV LD_LIBRARY_PATH  /opt/oracle/instantclient_12_2:${LD_LIBRARY_PATH}
+ENV ORACLE_HOME instantclient,/opt/oracle/instantclient_12_2
 
 RUN apt-get update; \
     \
@@ -34,26 +44,13 @@ RUN apt-get update; \
     apt-get clean; \
     php -i | grep 'Scan this directory for additional'; \
     a2enmod rewrite php7.0; \
+    unzip /opt/oracle/instantclient-basic-linux.x64-12.2.0.1.0.zip -d /opt/oracle \
+        && unzip /opt/oracle/instantclient-sdk-linux.x64-12.2.0.1.0.zip -d /opt/oracle \
+        && ln -s /opt/oracle/instantclient_12_2/libclntsh.so.12.2 /opt/oracle/instantclient_12_2/libclntsh.so \
+        && ln -s /opt/oracle/instantclient_12_2/libclntshcore.so.12.2 /opt/oracle/instantclient_12_2/libclntshcore.so \
+        && ln -s /opt/oracle/instantclient_12_2/libocci.so.12.2 /opt/oracle/instantclient_12_2/libocci.so \
+        && rm -rf /opt/oracle/*.zip; \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /var/cache/apt/archive/*.deb;
-
-#ORACLE Client
-RUN mkdir /opt/oracle \
-    && cd /opt/oracle
-
-ADD oracle/instantclient-basic-linux.x64-12.2.0.1.0.zip /opt/oracle
-ADD oracle/instantclient-sdk-linux.x64-12.2.0.1.0.zip /opt/oracle
-ADD oracle/instantclient-sqlplus-linux.x64-12.2.0.1.0.zip /opt/oracle
-
-# Install Oracle Instantclient
-RUN  unzip /opt/oracle/instantclient-basic-linux.x64-12.2.0.1.0.zip -d /opt/oracle \
-    && unzip /opt/oracle/instantclient-sdk-linux.x64-12.2.0.1.0.zip -d /opt/oracle \
-    && ln -s /opt/oracle/instantclient_12_2/libclntsh.so.12.2 /opt/oracle/instantclient_12_2/libclntsh.so \
-    && ln -s /opt/oracle/instantclient_12_2/libclntshcore.so.12.2 /opt/oracle/instantclient_12_2/libclntshcore.so \
-    && ln -s /opt/oracle/instantclient_12_2/libocci.so.12.2 /opt/oracle/instantclient_12_2/libocci.so \
-    && rm -rf /opt/oracle/*.zip
-
-ENV LD_LIBRARY_PATH  /opt/oracle/instantclient_12_2:${LD_LIBRARY_PATH}
-ENV ORACLE_HOME instantclient,/opt/oracle/instantclient_12_2
 
 # PHP settings
 RUN set -ex; \
