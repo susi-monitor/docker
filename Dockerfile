@@ -13,8 +13,8 @@ ADD oracle/instantclient-basic-linux.x64-12.2.0.1.0.zip /opt/oracle
 ADD oracle/instantclient-sdk-linux.x64-12.2.0.1.0.zip /opt/oracle
 ADD oracle/instantclient-sqlplus-linux.x64-12.2.0.1.0.zip /opt/oracle
 
-ENV LD_LIBRARY_PATH  /opt/oracle/instantclient_12_2:${LD_LIBRARY_PATH}
-ENV ORACLE_HOME instantclient,/opt/oracle/instantclient_12_2
+ENV LD_LIBRARY_PATH  /opt/oracle/instantclient_12_2/client64/lib/
+ENV ORACLE_HOME instantclient,/opt/oracle/instantclient_12_2/client64/lib/
 
 RUN apt-get update; \
     \
@@ -38,7 +38,6 @@ RUN apt-get update; \
     php7.0-mysql \
     php7.0-sqlite3 \
     php7.0-pgsql \
-    php7.0-oci8 \
     php7.0-xml \
     php7.0-zip; \
     apt-get clean; \
@@ -50,6 +49,8 @@ RUN apt-get update; \
         && ln -s /opt/oracle/instantclient_12_2/libclntshcore.so.12.2 /opt/oracle/instantclient_12_2/libclntshcore.so \
         && ln -s /opt/oracle/instantclient_12_2/libocci.so.12.2 /opt/oracle/instantclient_12_2/libocci.so \
         && rm -rf /opt/oracle/*.zip; \
+    echo 'instantclient,/usr/lib/oracle/12.1/client64/lib' | pecl install -f oci8-2.0.8; \
+    echo "extension=oci8.so" > /etc/php5/apache2/conf.d/30-oci8.ini; \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /var/cache/apt/archive/*.deb;
 
 # PHP settings
