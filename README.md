@@ -12,6 +12,7 @@ Basically bind port 80 to something and provide BASEURL (in `http(s)://HOSTNAME`
 
 By default SuSi-monitor uses SQLite DB stored in `/data/` so you may want to mount
 it for persistence.
+
 ---
 Optionally you may wish to customize rest of variables:
 - `ADMIN_PASSWORD` - password for /admin page
@@ -25,3 +26,17 @@ Optionally you may wish to customize rest of variables:
 - `PROXY_CREDENTIALS` - user:password format
 - `VERIFYHOST` - enable this if you need to verify certificates when polling (default: disabled)
 - `VERIFYPEER` - same as above
+
+Database variables :
+(if you do not provide them then SQLITE is used by default)
+
+- `DB_DSN` - full connection string (OR provide host, driver, and DB name etc. separately)
+- `DB_HOSTNAME` ,
+- `DB_NAME`,
+- `DB_USERNAME`,
+- `DB_PASSWORD`,
+- `DB_DRIVER` - currently supported drivers are `mysqli`, `oci8`, `pdo`, `postgre`, `sqlite3`. 
+                                        For options other than default (sqlite3) or mysqli (where there is sample 
+                                        DB structure SQL provided) you will have to create the database structure yourself. 
+                                        If you want to set external DB then using MYSQL is recommended.
+- `DB_PREFIX`

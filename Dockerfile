@@ -28,12 +28,32 @@ RUN apt-get update; \
     php7.0-mysql \
     php7.0-sqlite3 \
     php7.0-pgsql \
+    php7.0-oci8 \
     php7.0-xml \
     php7.0-zip; \
     apt-get clean; \
     php -i | grep 'Scan this directory for additional'; \
     a2enmod rewrite php7.0; \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /var/cache/apt/archive/*.deb;
+
+#ORACLE Client
+RUN mkdir /opt/oracle \
+    && cd /opt/oracle
+
+ADD instantclient-basic-linux.x64-12.2.0.1.0.zip /opt/oracle
+ADD instantclient-sdk-linux.x64-12.2.0.1.0.zip /opt/oracle
+ADD instantclient-sqlplus-linux.x64-12.2.0.1.0.zip /opt/oracle
+
+# Install Oracle Instantclient
+RUN  unzip /opt/oracle/instantclient-basic-linux.x64-12.2.0.1.0.zip -d /opt/oracle \
+    && unzip /opt/oracle/instantclient-sdk-linux.x64-12.2.0.1.0.zip -d /opt/oracle \
+    && ln -s /opt/oracle/instantclient_12_2/libclntsh.so.12.2 /opt/oracle/instantclient_12_2/libclntsh.so \
+    && ln -s /opt/oracle/instantclient_12_2/libclntshcore.so.12.2 /opt/oracle/instantclient_12_2/libclntshcore.so \
+    && ln -s /opt/oracle/instantclient_12_2/libocci.so.12.2 /opt/oracle/instantclient_12_2/libocci.so \
+    && rm -rf /opt/oracle/*.zip
+
+ENV LD_LIBRARY_PATH  /opt/oracle/instantclient_12_2:${LD_LIBRARY_PATH}
+ENV ORACLE_HOME instantclient,/opt/oracle/instantclient_12_2
 
 # PHP settings
 RUN set -ex; \
