@@ -40,9 +40,9 @@ RUN apt-get update; \
 RUN mkdir /opt/oracle \
     && cd /opt/oracle
 
-ADD instantclient-basic-linux.x64-12.2.0.1.0.zip /opt/oracle
-ADD instantclient-sdk-linux.x64-12.2.0.1.0.zip /opt/oracle
-ADD instantclient-sqlplus-linux.x64-12.2.0.1.0.zip /opt/oracle
+ADD oracle/instantclient-basic-linux.x64-12.2.0.1.0.zip /opt/oracle
+ADD oracle/instantclient-sdk-linux.x64-12.2.0.1.0.zip /opt/oracle
+ADD oracle/instantclient-sqlplus-linux.x64-12.2.0.1.0.zip /opt/oracle
 
 # Install Oracle Instantclient
 RUN  unzip /opt/oracle/instantclient-basic-linux.x64-12.2.0.1.0.zip -d /opt/oracle \
