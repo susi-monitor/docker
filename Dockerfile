@@ -118,6 +118,7 @@ COPY database.php /var/www/app/application/config/database.php
 COPY docker-entrypoint.sh /sbin/docker-entrypoint.sh
 RUN chmod 775 /sbin/docker-entrypoint.sh
 
+# Work in app directory
 WORKDIR /var/www/app/
 
 EXPOSE 80 443
