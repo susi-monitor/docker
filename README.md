@@ -27,6 +27,7 @@ Optionally you may wish to customize rest of variables:
 - `VERIFYHOST` - enable this if you need to verify certificates when polling (default: disabled)
 - `VERIFYPEER` - same as above
 - `CRON_ENABLED` - if you're running multiple replicas of SuSi **only one should have it enabled**. Enabled means that container will automatically trigger uptime checks. If you disable it on all replicas you have to trigger checks by calling `/data/update` endpoint directly
+- `SHELL_EXEC_CURL` - exec cURL binary rather than libcurl call
 
 Database variables :
 (if you do not provide them then SQLITE is used by default)
