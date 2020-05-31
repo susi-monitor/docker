@@ -23,6 +23,7 @@ RUN apt-get update; \
     wget \
     curl \
     cron \
+    nano \
     ca-certificates \
     unzip \
     php7.0 \
@@ -131,4 +132,4 @@ WORKDIR /var/www/app/
 
 EXPOSE 80 443
 ENTRYPOINT [ "/sbin/docker-entrypoint.sh" ]
-CMD ["/usr/sbin/apache2 -D FOREGROUND && cron && tail -f /var/log/cron.log"]
+CMD ["/usr/sbin/apache2 -D FOREGROUND"]

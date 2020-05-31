@@ -17,5 +17,5 @@ else
     chown -R www-data:www-data /data/
 fi
 
-
+exec touch /var/run/cron.pid && chmod 777 /var/run/cron.pid && nohup cron &
 exec /usr/sbin/apache2 -D FOREGROUND
