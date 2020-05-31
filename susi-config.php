@@ -10,7 +10,12 @@ $settings = array(
     'UA_STRING',
     'PROXY_ENABLED',
     'PROXY_HOST',
+    'PROXY_PORT',
     'PROXY_CREDENTIALS',
+    'PROXY_ENABLED_NOTIFICATIONS',
+    'PROXY_HOST_NOTIFICATIONS',
+    'PROXY_PORT_NOTIFICATIONS',
+    'PROXY_CREDENTIALS_NOTIFICATIONS',
     'VERIFYHOST',
     'VERIFYPEER',
     'SHELL_EXEC_CURL'
@@ -72,11 +77,17 @@ defined('TEAMS_WEBHOOK_URL')  OR define('TEAMS_WEBHOOK_URL', isset($_ENV['TEAMS_
 /* Custom User Agent string */
 defined('UA_STRING')  OR define('UA_STRING', 'SuSi Monitor v'.RELEASE_VERSION);
 
-/* Proxy settings */
+/* Proxy settings - uptime checking */
 defined('PROXY_ENABLED')  OR define('PROXY_ENABLED', isset($_ENV['PROXY_ENABLED']) ? $_ENV['PROXY_ENABLED'] : 0);
 defined('PROXY_HOST')  OR define('PROXY_HOST', isset($_ENV['PROXY_HOST']) ? $_ENV['PROXY_HOST'] : 'localhost');
 defined('PROXY_PORT')  OR define('PROXY_PORT', isset($_ENV['PROXY_PORT']) ? $_ENV['PROXY_PORT'] : 8080);
 defined('PROXY_CREDENTIALS')  OR define('PROXY_CREDENTIALS', isset($_ENV['PROXY_CREDENTIALS']) ? $_ENV['PROXY_CREDENTIALS'] : '');
+
+/* Proxy settings - notifications */
+defined('PROXY_ENABLED_NOTIFICATIONS')  OR define('PROXY_ENABLED_NOTIFICATIONS', isset($_ENV['PROXY_ENABLED_NOTIFICATIONS']) ? $_ENV['PROXY_ENABLED_NOTIFICATIONS'] : 0);
+defined('PROXY_HOST_NOTIFICATIONS')  OR define('PROXY_HOST_NOTIFICATIONS', isset($_ENV['PROXY_HOST_NOTIFICATIONS']) ? $_ENV['PROXY_HOST_NOTIFICATIONS'] : 'localhost');
+defined('PROXY_PORT_NOTIFICATIONS')  OR define('PROXY_PORT_NOTIFICATIONS', isset($_ENV['PROXY_PORT_NOTIFICATIONS']) ? $_ENV['PROXY_PORT_NOTIFICATIONS'] : 8080);
+defined('PROXY_CREDENTIALS_NOTIFICATIONS')  OR define('PROXY_CREDENTIALS_NOTIFICATIONS', isset($_ENV['PROXY_CREDENTIALS_NOTIFICATIONS']) ? $_ENV['PROXY_CREDENTIALS_NOTIFICATIONS'] : '');
 
 /* MITM protection - disabled by default - set "2" to enforce checks */
 defined('VERIFYHOST')  OR define('VERIFYHOST', isset($_ENV['VERIFYHOST']) ? $_ENV['VERIFYHOST'] : 0);

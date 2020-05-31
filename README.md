@@ -24,6 +24,10 @@ Optionally you may wish to customize rest of variables:
 - `PROXY_HOST` - proxy host, can be IP, protocol not needed
 - `PROXY_PORT` - proxy port
 - `PROXY_CREDENTIALS` - user:password format
+- `PROXY_ENABLED_NOTIFICATIONS` - this and below proxy settings are to be used when sending notifications
+- `PROXY_HOST_NOTIFICATIONS` - see above
+- `PROXY_PORT_NOTIFICATIONS` - see above
+- `PROXY_CREDENTIALS_NOTIFICATIONS` - see above
 - `VERIFYHOST` - enable this if you need to verify certificates when polling (default: disabled)
 - `VERIFYPEER` - same as above
 - `SHELL_EXEC_CURL` - exec cURL binary rather than libcurl call
