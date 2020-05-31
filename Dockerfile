@@ -122,7 +122,9 @@ RUN chmod 775 /sbin/docker-entrypoint.sh
 # Cron stuff
 COPY susi-cron /etc/cron.d/susi-cron
 COPY cron.php /var/www/cron.php
-RUN chmod 0644 /etc/cron.d/susi-cron && crontab /etc/cron.d/susi-cron && touch /var/log/cron.log
+RUN chmod 0644 /etc/cron.d/susi-cron
+RUN crontab /etc/cron.d/susi-cron
+RUN touch /var/log/cron.log
 
 # Work in app directory
 WORKDIR /var/www/app/
