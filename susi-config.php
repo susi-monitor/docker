@@ -12,7 +12,8 @@ $settings = array(
     'PROXY_HOST',
     'PROXY_CREDENTIALS',
     'VERIFYHOST',
-    'VERIFYPEER'
+    'VERIFYPEER',
+    'SHELL_EXEC_CURL'
 );
 
 foreach ($settings as $var) {
@@ -80,3 +81,6 @@ defined('PROXY_CREDENTIALS')  OR define('PROXY_CREDENTIALS', isset($_ENV['PROXY_
 /* MITM protection - disabled by default - set "2" to enforce checks */
 defined('VERIFYHOST')  OR define('VERIFYHOST', isset($_ENV['VERIFYHOST']) ? $_ENV['VERIFYHOST'] : 0);
 defined('VERIFYPEER')  OR define('VERIFYPEER', isset($_ENV['VERIFYPEER']) ? $_ENV['VERIFYPEER'] : 0);
+
+/* If set to true curl calls will be done using curl binary rather than libcurl */
+defined('SHELL_EXEC_CURL')  OR define('SHELL_EXEC_CURL', isset($_ENV['SHELL_EXEC_CURL']) ? $_ENV['SHELL_EXEC_CURL'] : 0);
