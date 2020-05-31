@@ -22,6 +22,7 @@ RUN apt-get update; \
     apache2 \
     wget \
     curl \
+    cron \
     ca-certificates \
     unzip \
     php7.0 \
@@ -118,9 +119,14 @@ COPY database.php /var/www/app/application/config/database.php
 COPY docker-entrypoint.sh /sbin/docker-entrypoint.sh
 RUN chmod 775 /sbin/docker-entrypoint.sh
 
+# Cron stuff
+COPY susi-cron /etc/cron.d/susi-cron
+COPY cron.php /var/www/cron.php
+RUN chmod 0644 /etc/cron.d/susi-cron && crontab /etc/cron.d/susi-cron && touch /var/log/cron.log
+
 # Work in app directory
 WORKDIR /var/www/app/
 
 EXPOSE 80 443
 ENTRYPOINT [ "/sbin/docker-entrypoint.sh" ]
-CMD ["/usr/sbin/apache2 -D FOREGROUND"]
+CMD ["/usr/sbin/apache2 -D FOREGROUND && cron && tail -f /var/log/cron.log"]
