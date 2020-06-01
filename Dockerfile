@@ -76,7 +76,7 @@ RUN set -ex; \
     } > /etc/php/7.0/cli/conf.d/susi-others.ini
 
 # Generate download URL
-ENV VERSION 1.4.3
+ENV VERSION 1.4.4
 ENV URL https://github.com/susi-monitor/susi-monitor/releases/download/${VERSION}/susi_monitor_${VERSION}_bundle.zip
 ARG BUILD_DATE
 ARG VCS_REF
